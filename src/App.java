@@ -41,8 +41,41 @@ public class App {
     }
 
     private static void task1Function() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'task1Function'");
+        System.out.println("Input: ");
+        String input = scanner.nextLine();
+        String[] numbers = input.split(" ");
+
+        // TreeSet is perfect for holding unique values and having them sorted during
+        // insertion
+        TreeSet<Integer> uniqueNumbers = new TreeSet<>();
+
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int count = 0;
+
+        for (String number : numbers) {
+            int num = Integer.parseInt(number);
+
+            // Update count
+            count++;
+
+            // Update min and max
+            if (num < min) {
+                min = num;
+            }
+            if (num > max) {
+                max = num;
+            }
+
+            uniqueNumbers.add(num);
+        }
+
+        // Output:
+        System.out.println(uniqueNumbers.toString().replaceAll("\\[|\\]|,", ""));
+        System.out.println("count: " + count);
+        System.out.println("distinct: " + uniqueNumbers.size());
+        System.out.println("min: " + min);
+        System.out.println("max: " + max);
     }
 
 }
