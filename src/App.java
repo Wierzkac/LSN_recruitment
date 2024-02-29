@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class App {
+    private static int goal = 13;
+
     private static Scanner scanner;
 
     public static void main(String[] args) throws Exception {
@@ -36,8 +38,30 @@ public class App {
     }
 
     private static void task2Function() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'task2Function'");
+        System.out.println("Input: ");
+        String input = scanner.nextLine();
+        String[] numbers = input.split(" ");
+
+        // PriorityQueue has build-in sorting but allows duplicates
+        PriorityQueue<String> pairs = new PriorityQueue<String>();
+        Set<Integer> seen = new HashSet<>();
+
+        for (String number : numbers) {
+            int num = Integer.parseInt(number);
+            int complement = goal - num;
+            // Check if already processed values contain a complement to the difference of
+            // goal and current value
+            if (seen.contains(complement)) {
+                // If so, you have found your pair
+                pairs.add(Math.min(num, complement) + ", " + Math.max(num, complement));
+            }
+            seen.add(num);
+        }
+
+        // Output:
+        for (String pair : pairs) {
+            System.out.println(pair);
+        }
     }
 
     private static void task1Function() {
