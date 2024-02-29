@@ -1,4 +1,6 @@
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class App {
     private static int goal = 13;
@@ -33,8 +35,71 @@ public class App {
     }
 
     private static void task3Function() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'task3Function'");
+        System.out.println("Input: ");
+        int number = Integer.parseInt(scanner.nextLine());
+
+        List<String> items = new ArrayList<>();
+
+        for (int n = 0; n < number; n++) {
+            String[] pair = scanner.nextLine().split(" ");
+
+            int found = 0;
+            for (int i = 0; i < items.size(); i++) {
+                String graph = items.get(i);
+                String[] nodes = graph.split(" ");
+
+                if (Arrays.asList(nodes).contains(pair[0])) {
+                    items.set(i, graph + " " + pair[1]);
+                    found++;
+                }
+                if (Arrays.asList(nodes).contains(pair[1])) {
+                    items.set(i, graph + " " + pair[0]);
+                    found++;
+                }
+
+            }
+            // If no found items, add this connection to the list
+            if (found == 0)
+                items.add(pair[0] + " " + pair[1]);
+            // If one connection found, it has already been added
+            // If more connections found, merge those connections into one item
+            else if (found > 1) {
+                for (int i = 0; i < items.size(); i++) {
+                    String[] str1 = items.get(i).split(" ");
+                    for (int j = i + 1; j < items.size(); j++) {
+                        String[] str2 = items.get(j).split(" ");
+
+                        // Check if items i and j are connected
+                        boolean isConnection = Arrays.stream(str1)
+                                .mapToInt(Integer::parseInt)
+                                .anyMatch(num1 -> Arrays.stream(str2)
+                                        .mapToInt(Integer::parseInt)
+                                        .anyMatch(num2 -> num1 == num2));
+                        if (!isConnection)
+                            continue;
+
+                        // If so, concat strings, order numbers ascending, eliminate repeats
+                        String finalStr = items.get(i) + " " + items.get(j);
+                        String result = Arrays.stream(finalStr.split(" "))
+                                .mapToInt(Integer::parseInt)
+                                .sorted()
+                                .distinct()
+                                .mapToObj(Integer::toString)
+                                .collect(Collectors.joining(" "));
+                        // Remove items i and j, add a new one being a merge of them
+                        items.remove(j);
+                        items.remove(i);
+                        items.add(result);
+                        // Reset the loop
+                        i = 0;
+                        j = i + 1;
+                    }
+                }
+            }
+
+        }
+
+        System.out.println(items.size());
     }
 
     private static void task2Function() {
