@@ -109,17 +109,17 @@ public class App {
 
         // PriorityQueue has build-in sorting but allows duplicates
         PriorityQueue<String> pairs = new PriorityQueue<String>();
-        Set<Integer> seen = new HashSet<>();
+        List<Integer> seen = new LinkedList<>();
 
         for (String number : numbers) {
             int num = Integer.parseInt(number);
             int complement = goal - num;
             // Check if already processed values contain a complement to the difference of
             // goal and current value
-            if (seen.contains(complement)) {
-                // If so, you have found your pair
-                pairs.add(Math.min(num, complement) + ", " + Math.max(num, complement));
-            }
+            seen.forEach(item -> {
+                if (item == complement)
+                    pairs.add(Math.min(num, complement) + ", " + Math.max(num, complement));
+            });
             seen.add(num);
         }
 
